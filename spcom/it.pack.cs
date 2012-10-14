@@ -11,8 +11,8 @@ namespace spcom {
 
             ushort rowsize = (ushort) ( channels * 5 );
 
-            for ( int i =0; i < numpatterns; i++ ) {
-                channelgroup[] prev = new channelgroup[ 64 ];
+            for ( int i = 0; i < numpatterns; i++ ) {
+                channelgroup[] previousvalues = new channelgroup[ 64 ];
                 byte[] channelmask = new byte[ 64 ];
                 byte[] prevmaskvar = new byte[ 64 ];
 
@@ -32,48 +32,48 @@ namespace spcom {
 
                         if ( maskvar != 0 ) {
                             if ( ( maskvar & 1 ) == 1 ) {
-                                if ( patterns[ i ].row[ row ].channel[ channel ].note == prev[ channel ].note ) {
+                                if ( patterns[ i ].row[ row ].channel[ channel ].note == previousvalues[ channel ].note ) {
                                     unchecked {
                                         maskvar &= (byte) ~0x01;
                                         maskvar |= 0x10;
                                     }
                                 }
                                 else {
-                                    prev[ channel ].note = patterns[ i ].row[ row ].channel[ channel ].note;
+                                    previousvalues[ channel ].note = patterns[ i ].row[ row ].channel[ channel ].note;
                                 }
                             }
                             if ( ( maskvar & 2 ) == 2 ) {
-                                if ( patterns[ i ].row[ row ].channel[ channel ].instrument == prev[ channel ].instrument ) {
+                                if ( patterns[ i ].row[ row ].channel[ channel ].instrument == previousvalues[ channel ].instrument ) {
                                     unchecked {
                                         maskvar &= (byte) ~0x02;
                                         maskvar |= 0x20;
                                     }
                                 }
                                 else {
-                                    prev[ channel ].instrument = patterns[ i ].row[ row ].channel[ channel ].instrument;
+                                    previousvalues[ channel ].instrument = patterns[ i ].row[ row ].channel[ channel ].instrument;
                                 }
                             }
                             if ( ( maskvar & 4 ) == 4 ) {
-                                if ( patterns[ i ].row[ row ].channel[ channel ].volume == prev[ channel ].volume ) {
+                                if ( patterns[ i ].row[ row ].channel[ channel ].volume == previousvalues[ channel ].volume ) {
                                     unchecked {
                                         maskvar &= (byte) ~0x04;
                                         maskvar |= 0x40;
                                     }
                                 }
                                 else {
-                                    prev[ channel ].volume = patterns[ i ].row[ row ].channel[ channel ].volume;
+                                    previousvalues[ channel ].volume = patterns[ i ].row[ row ].channel[ channel ].volume;
                                 }
                             }
                             if ( ( maskvar & 8 ) == 8 ) {
-                                if ( ( patterns[ i ].row[ row ].channel[ channel ].command == prev[ channel ].command ) && ( patterns[ i ].row[ row ].channel[ channel ].parameter == prev[ channel ].parameter ) ) {
+                                if ( ( patterns[ i ].row[ row ].channel[ channel ].command == previousvalues[ channel ].command ) && ( patterns[ i ].row[ row ].channel[ channel ].parameter == previousvalues[ channel ].parameter ) ) {
                                     unchecked {
                                         maskvar &= (byte) ~0x08;
                                         maskvar |= 0x80;
                                     }
                                 }
                                 else {
-                                    prev[ channel ].command = patterns[ i ].row[ row ].channel[ channel ].command;
-                                    prev[ channel ].parameter = patterns[ i ].row[ row ].channel[ channel ].parameter;
+                                    previousvalues[ channel ].command = patterns[ i ].row[ row ].channel[ channel ].command;
+                                    previousvalues[ channel ].parameter = patterns[ i ].row[ row ].channel[ channel ].parameter;
                                 }
                             }
                             if ( maskvar != channelmask[ channel ] ) {

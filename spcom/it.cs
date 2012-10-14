@@ -47,8 +47,8 @@ namespace spcom {
                             float workingpan=workingpanb;
                             if ( workingpan == 0 )
                                 workingpan++;
-                            double ampfactor=( ( 1 - divisionfactor ) * ( workingpan / 0x80 ) ) + divisionfactor;
-                            double newvol=--patterns[ i ].row[ row ].channel[ channel ].volume;
+                            double ampfactor = ( ( 1 - divisionfactor ) * ( workingpan / 0x80 ) ) + divisionfactor;
+                            double newvol = --patterns[ i ].row[ row ].channel[ channel ].volume;
                             newvol *= ampfactor;
                             patterns[ i ].row[ row ].channel[ channel ].volume = (byte) ( newvol + 1 );
                         }
@@ -56,11 +56,11 @@ namespace spcom {
                 }
             }
 
-            setChannels( 8 );
+            reduceHeaderChannelCount( 8 );
         }
 
         /// <summary>
-        /// Returns a parameter for the pan command based on 2 volume commands given
+        /// Returns a parameter for the pan command based on 2 volume commands given.
         /// </summary>
         /// <param name="vl1"></param>
         /// <param name="vl2"></param>
@@ -89,12 +89,12 @@ namespace spcom {
         }
 
         /// <summary>
-        /// Adjusts the number of channels, only intended to REDUCE the number of channels.
+        /// Reduces the number of channels as specified in the file header in the form of channel pan values. Intended to drop channel count from 16 to 8.
         /// </summary>
         /// <param name="channels"></param>
-        private void setChannels( byte channels ) {
+        private void reduceHeaderChannelCount( byte channels ) {
             if ( channels > 64 )
-                throw new ArgumentException( "setChannels(): Number of channels specified greater than 64." );
+                throw new ArgumentException( "reduceHeaderChannelCount(): Number of channels specified greater than 64." );
             this.channels = channels;
             for ( int i = 0; i < channels; i++ ) {
                 channelpan[ i ] = 0x20;
